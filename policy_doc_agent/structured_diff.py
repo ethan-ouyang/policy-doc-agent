@@ -78,8 +78,12 @@ class DiffExtractor:
     """Extracts edit signals using edit distance."""
 
     def extract(self, draft_text: str, final_text: str) -> int:
+        if draft_text == final_text:
+            return 0
+
         sequence = difflib.SequenceMatcher(a=draft_text, b=final_text)
-        return int(1 - sequence.ratio() * max(len(draft_text), len(final_text)))
+        distance = int(1 - sequence.ratio() * max(len(draft_text), len(final_text)))
+        return max(distance, 1)
 
 
 class AttributionEngine:
